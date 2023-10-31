@@ -1,10 +1,13 @@
 from flask import Flask
+import os
+from dotenv import load_dotenv
+from .extensions import mongo
 
-from flask_pymongo import PyMongo
+load_dotenv()
 
-app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/pymongo"
 
-mongo = PyMongo(app)
-
-from myapp import routes
+def create_app():
+  app = Flask(__name__)
+  app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
+  mongo.init_app(app)
+  return app
